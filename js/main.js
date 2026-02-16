@@ -146,20 +146,27 @@ if (cursorDot && cursorOutline) {
 }
 
 const storedTheme = window.localStorage.getItem("theme");
-if (storedTheme === "light") {
-  document.body.classList.add("light-theme");
+if (storedTheme === "dark") {
+  document.body.classList.add("dark-theme");
 }
+
+const syncThemeToggleIcon = () => {
+  if (!themeToggle) return;
+  const icon = themeToggle.querySelector("i");
+  if (!icon) return;
+  const isDark = document.body.classList.contains("dark-theme");
+  icon.classList.toggle("fa-moon", !isDark);
+  icon.classList.toggle("fa-sun", isDark);
+};
+
+syncThemeToggleIcon();
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("light-theme");
-    const theme = document.body.classList.contains("light-theme") ? "light" : "dark";
+    document.body.classList.toggle("dark-theme");
+    const theme = document.body.classList.contains("dark-theme") ? "dark" : "light";
     window.localStorage.setItem("theme", theme);
-    const icon = themeToggle.querySelector("i");
-    if (icon) {
-      icon.classList.toggle("fa-moon", theme !== "light");
-      icon.classList.toggle("fa-sun", theme === "light");
-    }
+    syncThemeToggleIcon();
   });
 }
 
@@ -274,4 +281,3 @@ if (contactForm) {
     contactForm.reset();
   });
 }
-
